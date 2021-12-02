@@ -17,12 +17,8 @@ function up() {
   AIM=$((AIM - $1))
 }
 
-while read -ra instruction; do
-  case ${instruction[0]} in
-  forward) forward instruction[1] ;;
-  down) down instruction[1] ;;
-  up) up instruction[1] ;;
-  esac
+while read -r instruction; do
+  eval "$instruction"
 done < input.txt
 
 echo $((HORIZONTAL * DEPTH))
