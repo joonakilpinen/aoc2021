@@ -17,6 +17,6 @@ function up() {
   ((AIM -= $1))
 }
 
-eval "$(cat input.txt)"
+eval "$(<input.txt)"
 
 echo $((HORIZONTAL * DEPTH))
