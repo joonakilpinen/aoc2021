@@ -17,8 +17,6 @@ function up() {
   AIM=$((AIM - $1))
 }
 
-while read -r instruction; do
-  eval "$instruction"
-done < input.txt
+eval "$(cat input.txt)"
 
 echo $((HORIZONTAL * DEPTH))
