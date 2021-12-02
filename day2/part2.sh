@@ -5,16 +5,16 @@ DEPTH=0
 AIM=0
 
 function forward() {
-  HORIZONTAL=$((HORIZONTAL + $1))
-  DEPTH=$((DEPTH + AIM * $1))
+  ((HORIZONTAL += $1))
+  ((DEPTH += AIM * $1))
 }
 
 function down() {
-  AIM=$((AIM + $1))
+  ((AIM += $1))
 }
 
 function up() {
-  AIM=$((AIM - $1))
+  ((AIM -= $1))
 }
 
 eval "$(cat input.txt)"
