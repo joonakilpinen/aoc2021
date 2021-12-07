@@ -3,8 +3,7 @@
 INPUT=input.txt
 MAX_POSITION=-1
 FREQUENCIES=()
-CONSUMPTION=$(echo "$(printf "%u" -1) / 2" | bc )
-TARGET=-1
+CONSUMPTION=0
 
 IFS=, read -ra CRABS < "$INPUT"
 for crab in "${CRABS[@]}"; do
@@ -19,21 +18,24 @@ for crab in "${CRABS[@]}"; do
   ((FREQUENCIES[crab]++))
 done
 
+function mean() {
+  sum=0
+  for crab in "${CRABS[@]}"; do
+    ((sum+=crab))
+  done
+  echo $((sum / ${#CRABS[@]}))
+}
+
+TARGET="$(mean "${CRABS[@]}")"
+
 function sum() {
   echo $(($1 * ($1 + 1) / 2))
 }
 
-for ((i=0; i<MAX_POSITION; i++)) do
-  consumption=0
-  for j in "${!FREQUENCIES[@]}"; do
-    [ "$j" -gt "$i" ] && ((moves = j - i))
-    [ "$j" -lt "$i" ] && ((moves = i - j))
-    ((consumption += $(sum moves) * FREQUENCIES[j]))
-  done
-  if [ "$consumption" -lt "$CONSUMPTION" ]; then
-    CONSUMPTION=$consumption
-    TARGET=$i
-  fi
+for i in "${!FREQUENCIES[@]}"; do
+  [ "$i" -gt "$TARGET" ] && ((moves = i - TARGET))
+  [ "$i" -lt "$TARGET" ] && ((moves = TARGET - i))
+  ((CONSUMPTION += $(sum moves) * FREQUENCIES[i]))
 done
 
 echo "TARGET: $TARGET, CONSUMPTION: $CONSUMPTION"
